@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dependent Dropdown in Django</title>
+</head>
+<body>
+<h2>Person Form</h2>
+
+<form method="post" id="personForm" data-branches-url="{% url 'ajax_load_branches' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+  <div class="col-md-6">
+    <label for="inputAddress2" class="form-label">DOB</label>
+    <input name="dob" type="date" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+  </div>
+   <div class="col-md-6">
+    <label for="inputCity" class="form-label">Age</label>
+    <input name="age" type="text" class="form-control" id="inputCity">
+  </div>
+   <fieldset class="row mb-3">
+    <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
+    <div class="col-sm-10">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="gender" id="gridRadios1" value="option1" checked>
+        <label class="form-check-label" for="gridRadios1">
+          Male
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="gender" id="gridRadios2" value="option2">
+        <label class="form-check-label" for="gridRadios2">
+          Female
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="gender" id="gridRadios3" value="option3">
+        <label class="form-check-label" for="gridRadios3">
+          Other
+        </label>
+      </div>
+    </div>
+  </fieldset>
+    <div class="col-md-6">
+      <label for="phone">Phone number:</label>
+      <input name="phone" type="tel" id="phone" pattern="[0-9]{10}">
+      <small>format:0123456789</small>
+    </div>
+
+
+
+  <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">Email</label>
+    <input name="email" type="email" class="form-control" id="inputEmail4">
+  </div>
+
+  <div class="col-md-6">
+    <label for="inputAddress" class="form-label">Address</label>
+    <input name="address" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+  </div>
+
+    <div class="col-md-6">
+    <label for="inputState" class="form-label">Account type</label>
+    <select name="account" id="inputState" class="form-select">
+      <option selected>Select account type</option>
+      <option>Savings</option>
+      <option>Current</option>
+    </select>
+  </div>
+<div class="col-md-6">
+  <label>Material to Provide:</label>
+      <div>
+      <input type="checkbox" name="material" id="langs_javascript" value="JavaScript" checked>
+      <label for="langs_javascript">Debit Card
+      </label>
+      </div>
+      <div>
+      <input type="checkbox" name="material" id="langs_perl" value="Perl">
+        <label for="langs_perl">Credit Card</label>
+      </div>
+      <div>
+    <input type="checkbox" name="material" id="langs_php" value="PHP" checked>
+        <label for="langs_php">Cheque Book</label>
+    </div>
+      <div>
+    <input type="checkbox" name="material" id="langs_ruby" value="Ruby">
+        <label for="langs_ruby">Other</label>
+    </div>
+
+
+</div>
+
+    <div class="col-12">
+<!--    <button type="button">SUBMIT</button>-->
+            <input type="submit" value="Submit">
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+   $("#id_district").change(function () {
+        const url = $("#personForm").attr("data-branches-url");  // get the url of the `load_cities` view
+        const districtId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'district_id': districtId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_branch").html(data);  // replace the contents of the city input with the data that came from the server
+                /*
+
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (branch) {
+                    html_data += `<option value="${branch.id}">${branch.name}</option>`
+                });
+                console.log(html_data);
+                $("#id_branch").html(html_data);
+
+                */
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>
